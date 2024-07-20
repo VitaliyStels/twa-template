@@ -3,11 +3,13 @@ import { TonConnectButton } from "@tonconnect/ui-react";
 import { Counter } from "./components/Counter";
 import { Jetton } from "./components/Jetton";
 import { TransferTon } from "./components/TransferTon";
+import { useFaucetJettonContract } from "./hooks/useFaucetJettonContract";
 import styled from "styled-components";
 import { Button, FlexBoxCol, FlexBoxRow } from "./components/styled/styled";
 import { useTonConnect } from "./hooks/useTonConnect";
 import { CHAIN } from "@tonconnect/protocol";
 import "@twa-dev/sdk";
+import { Address } from "ton-core";
 
 const StyledApp = styled.div`
   background-color: #e8e8e8;
@@ -27,7 +29,8 @@ const AppContainer = styled.div`
 `;
 
 function App() {
-  const { network } = useTonConnect();
+  const { wallet, network } = useTonConnect();
+  const { jettonWalletAddress } = useFaucetJettonContract();
   return (
     <StyledApp>
       <AppContainer>
@@ -54,10 +57,9 @@ function App() {
                 : "N/A"}
 
                 {
-                  // network ? network ===  ? "dsd" : "bb"
                   // * WALLET ENDPOINT
-                  // ! PROBABLY NEED TO CONVERT THE VALUE
-                  useTonConnect().wallet
+                  // ! DIFFERENCE OF THE VALUE MAY BE CAUSED BECAUSE OF DIVERGENCE OF THE NETWORK VERISONS 
+                  wallet ? Address.parse(wallet as string).toString() : 'none'
                 }
             </h2>
           </div>
